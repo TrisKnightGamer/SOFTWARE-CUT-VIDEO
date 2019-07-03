@@ -1,0 +1,109 @@
+#include<iostream>
+#include<math.h>
+#include<string>
+#include<fstream>
+#include<cstdio>
+#include <io.h>
+#include <opencv2/opencv.hpp> // Use openCV to capture frame by frame
+#include <opencv2/videoio.hpp>
+#include <opencv2/videoio/videoio_c.h> // need for writer video
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/core/core.hpp>
+
+//ofstream: Stream class to write on files
+//ifstream: Stream class to read from files
+//fstream : both
+
+using namespace std;
+using namespace cv;
+
+int main()
+{
+	///////////////////////////////////////// Code INPUT ////////////////////////////////////////
+	char inpath [1000];
+	cout << "Please enter the path of the video to import : ";
+	cin.getline(inpath,1000);
+	ofstream input(inpath);
+	string name;
+	if (access(inpath, 0) == -1) // File doesn't exist
+	{
+		cout << "Please enter name of file : ";
+		cin >> name;
+		name = name, ".mp4";
+		input.open(name, ios::out | ios::in | ios::app | ios::trunc);
+	}
+	else // File already existed 
+	{
+		cout << "Done!" << endl;
+	}
+	input.close();
+	///////////////////////////////////////// Code OUTPUT ///////////////////////////////////////
+	char outpath[1000];
+	cout << "Please enter the file path : ";
+	cin.getline(outpath,1000);
+	ofstream output(outpath);
+	string name1;
+	if (access(outpath, 0) == -1) // File doesn't exist
+	{
+		cout << "Please enter name of file ; ";
+		cin >> name1;
+		name1 = name1, ".mp4";
+		output.open(name1, ios::out | ios::in | ios::app | ios::trunc );
+	}
+	else  // File already existed
+	{
+		cout << "DONE !";
+	}
+	output.close();
+	///////////////////////////////////////// Code take picture from video //////////////////////
+	int n = 0;
+	VideoCapture cap = VideoCapture(inpath);
+	int amountOfFrame = cap.get(CV_CAP_PROP_FRAME_COUNT);
+	if (!cap.isOpened())
+	{
+		cout << "Can't open file " << endl; 
+		return -1;
+	}
+	//fourcc = cv2.VideoWriter_fourcc(*'X264');
+	int width = cap.get(CAP_PROP_FRAME_WIDTH);
+	int height = cap.get(CAP_PROP_FRAME_HEIGHT);
+	//VideoWriter videoout(name1, CV_FOURCC('M','P','E','G'), 60,Size(width, height),true);
+	namedWindow("Play video", 1);
+	stringstream ss;
+	while (1)
+	{
+		Mat frame;
+		cap.open(inpath);
+		cap.read(frame);
+		cout << "Width : " << cap.get(CAP_PROP_FRAME_WIDTH) << endl;
+		cout << "Height : " << cap.get(CAP_PROP_FRAME_HEIGHT) << endl;
+		cout << "Amount of frame : " << cap.get(CV_CAP_PROP_FRAME_COUNT) << endl;
+		cout << "FPS: " << cap.get(CV_CAP_PROP_FPS) << endl;
+		cout << "CODEC: " << cap.get(CV_CAP_PROP_FOURCC) << endl;
+		cout << "AVI_RATION: " << cap.get(CV_CAP_PROP_POS_AVI_RATIO) << endl;
+		cap >> frame;
+		if (frame.empty())
+		break;
+		//videoout.write(frame);
+		imshow("Frame", frame);
+		char c = (char)waitKey(1);
+		if (c == 27)
+		break;
+	}
+	/*for (n = 0; n <= amountOfFrame; n++)
+	{
+		threshold(frame, frame, 100, 255, THRESH_BINARY + THRESH_OTSU);// 
+		vector <uchar> buf;							                   // ->> Change img from Mat to jpg format
+		ss << imencode(".jpg", frame, buf) << "[" << n << "]";
+		n++;
+		cout << ss.rdbuf() << flush ;
+	}*/
+	/////////////////////////// CODE CUT VIDEO ///////////////////////////////////////////	
+	cap.release();// When everything done, release the video capture
+	//videoout.release();// When everything done, release write object
+	destroyAllWindows();// Closes all the windows
+	input.close(); 
+	system("pause");
+	return 0;
+}
