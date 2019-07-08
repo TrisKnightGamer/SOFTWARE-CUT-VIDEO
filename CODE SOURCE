@@ -22,6 +22,7 @@ int main()
 {
 	///////////////////////////////////////// Code INPUT ////////////////////////////////////////
 	char inpath [1000];
+	cin.ignore();
 	cout << "Please enter the path of the video to import : ";
 	cin.getline(inpath,1000);
 	string name;
@@ -41,6 +42,7 @@ int main()
 
 	///////////////////////////////////////// Code OUTPUT ///////////////////////////////////////
 	char outpath[1000];
+	cin.ignore();
 	cout << "Please enter the file path : ";
 	cin.getline(outpath,1000);
 	string name1;
