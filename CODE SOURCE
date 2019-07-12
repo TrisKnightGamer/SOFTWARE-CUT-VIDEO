@@ -75,7 +75,7 @@ int main()
 	//VideoWriter videoout(name1, CV_FOURCC('M','P','E','G'), 60,Size(width, height),true);
 	namedWindow("Play video", 1);
 	stringstream ss;
-	while (1)
+	for (;;)
 	{
 		Mat frame;
 		cap.open(inpath);
