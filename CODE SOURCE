@@ -86,7 +86,6 @@ int main()
 		cout << "FPS: " << cap.get(CV_CAP_PROP_FPS) << endl;
 		cout << "CODEC: " << cap.get(CV_CAP_PROP_FOURCC) << endl;
 		cout << "AVI_RATION: " << cap.get(CV_CAP_PROP_POS_AVI_RATIO) << endl;
-		cap >> frame;
 		if (frame.empty())
 		break;
 		//videoout.write(frame);
